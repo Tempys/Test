@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<configuration scan="true">
+
+          APPENDERS
+    <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <charset>utf-8</charset>
+            <Pattern>%d{yyyy-MM-dd-HH:mm:ss.SSS}|%X{user}|%1.1level|%logger{35}|%msg %ex%n</Pattern>
+        </encoder>
+    </appender>
+
+    <appender name="ASYNC_CONSOLE" class="ch.qos.logback.classic.AsyncAppender">
+        <queueSize>512</queueSize>
+        <appender-ref ref="CONSOLE"/>
+    </appender>
+
+    <appender name="MAIN_LOG_FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+
+        <file>logs/main.log</file>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>logs/main.%d{yyyy-MM-dd}.log.gz</fileNamePattern>
+            <maxHistory>31</maxHistory>
+        </rollingPolicy>
+        <encoder>
+            <charset>utf-8</charset>
+            <Pattern>%d{yyyy-MM-dd-HH:mm:ss.SSS}|%X{user}|%1.1level|%logger{35}|%msg %ex%n</Pattern>
+        </encoder>
+
+    </appender>
+
+    <appender name="ASYNC_MAIN_LOG_FILE" class="ch.qos.logback.classic.AsyncAppender">
+        <queueSize>512</queueSize>
+        <appender-ref ref="MAIN_LOG_FILE"/>
+    </appender>
+
+
+    <contextListener class="ch.qos.logback.classic.jul.LevelChangePropagator">
+        <resetJUL>true</resetJUL>
+    </contextListener>
+
+    <logger name="org.springframework" level="debug"/>
+
+    <root level="INFO">
+        <appender-ref ref="ASYNC_MAIN_LOG_FILE"/>
+        <appender-ref ref="ASYNC_CONSOLE"/>
+    </root>
+
+
+</configuration>
